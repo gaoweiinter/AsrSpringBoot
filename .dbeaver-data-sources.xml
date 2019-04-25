@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-sources>
+	<data-source id="mysql8-16a440ae82d-4dc4f9641b70615f" provider="mysql" driver="mysql8" name="MySQL 8+ - mysql_order" save-password="true" read-only="false">
+		<connection host="localhost" port="3306" server="" database="mysql_order" url="jdbc:mysql://localhost:3306/mysql_order" user="root" password="PjcLLxATFEdUQmbf" type="dev">
+			<network-handler type="PROXY" id="socks_proxy" enabled="false" save-password="true">
+				<property name="socks-port" value="1080"/>
+			</network-handler>
+			<network-handler type="TUNNEL" id="ssh_tunnel" enabled="false" save-password="true">
+				<property name="sshConnectTimeout" value="10000"/>
+				<property name="port" value="22"/>
+				<property name="implementation" value="jsch"/>
+				<property name="authType" value="PASSWORD"/>
+			</network-handler>
+			<network-handler type="CONFIG" id="mysql_ssl" enabled="false" save-password="true">
+				<property name="ssl.public.key.retrieve" value="false"/>
+				<property name="ssl.verify.server" value="true"/>
+				<property name="ssl.require" value="false"/>
+			</network-handler>
+		</connection>
+	</data-source>
+	<filters/>
+</data-sources>

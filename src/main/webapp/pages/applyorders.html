@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>apply orders information</title>
+<link rel="stylesheet" type="text/css"
+	  href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	  
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+$(function(){
+	$('#grid').datagrid({
+		url:'applyorder/getAll',
+		fit:true,
+		columns:[[
+			{field:'id',title:'编号',width:'50'},
+			{field:'message',title:'申请说明',width:'200'},
+			{field:'orderstatus',title:'状态',width:'50'},			
+			{field:'creator',title:'申请人',width:'100'},
+			{field:'createdate',title:'申请提交时间',width:'100'},
+			{field:'processor',title:'审批人',width:'100'},			
+			{field:'lastchangedate',title:'审批时间',width:'100'}
+		]]
+	});
+});
+</script>
+
+</head>
+
+<body>
+<table id="grid"></table>
+</body>
+
+</html>

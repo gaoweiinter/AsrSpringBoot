@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.richfit.asr.mapper.ApplyOrderMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.demo.richfit.asr.bean.ApplyOrder">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="message" property="message" jdbcType="VARCHAR" />
+		<result column="createdate" property="createdate"
+			jdbcType="TIMESTAMP" />
+		<result column="lastchangedate" property="lastchangedate"
+			jdbcType="TIMESTAMP" />
+		<result column="orderstatus" property="orderstatus" jdbcType="VARCHAR" />
+		<result column="creator" property="creator" jdbcType="VARCHAR" />
+		<result column="processor" property="processor"
+			jdbcType="VARCHAR" />
+		<result column="lastchangeby" property="lastchangeby"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		message,createdate,lastchangedate,orderstatus,creator,processor,lastchangeby
+	</sql>
+
+	<!-- find ApplyOrder -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from apply_orders
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from apply_orders
+		order by createdate asc
+	</select>
+
+	<!-- delete ApplyOrder -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		apply_orders
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- insert ApplyOrder -->
+	<insert id="insert"
+		parameterType="com.demo.richfit.asr.bean.ApplyOrder">
+		insert into apply_orders (id, message, createdate,
+		lastchangedate, orderstatus, creator, processor, lastchangeby)
+		values
+		(#{id,jdbcType=VARCHAR},
+		#{message,jdbcType=VARCHAR},
+		#{createdate,jdbcType=TIMESTAMP},
+		#{lastchangedate,jdbcType=TIMESTAMP},
+		#{orderstatus,jdbcType=VARCHAR},
+		#{creator,jdbcType=VARCHAR},
+		#{processor,jdbcType=VARCHAR},
+		#{lastchangeby,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKey"
+		parameterType="com.demo.richfit.asr.bean.ApplyOrder">
+		update apply_orders
+		set message =
+		#{message,jdbcType=VARCHAR},
+		createdate =
+		#{createdate,jdbcType=TIMESTAMP},
+		lastchangedate =
+		#{lastchangedate,jdbcType=TIMESTAMP},
+		orderstatus =
+		#{orderstatus,jdbcType=VARCHAR},
+		creator = #{creator,jdbcType=VARCHAR},
+		processor = #{processor,jdbcType=VARCHAR},
+		lastchangeby =
+		#{lastchangeby,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<select id="getApplyOrderById" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from
+		apply_orders
+		where id = #{id,jdbcType=VARCHAR}
+		order by createdate
+		asc
+	</select>
+
+</mapper>

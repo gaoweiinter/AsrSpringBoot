@@ -82,7 +82,7 @@
             button.previousElementSibling.disabled = false;
             button.previousElementSibling.className="btn btn-primary show";
             recorder.stop();
-            recorder.upload("<%=path%>/audio/upload", num);
+            recorder.upload("<%=path%>/audio/upload", num );
 
 		//createDownloadLink(num);
 
@@ -112,7 +112,99 @@
 		button.disabled = true;
 	}
 </script>
+
+<script type="text/javascript"> 
+ //模拟一段JSON数据，实际要从数据库中读取 
+ //var per = ${applyOrdersResult};
+ 
+ $.ajax({
+     type: "POST",
+     dataType: "json",
+     url: "<%=path%>/applyorder/getAll",
+     success: function (per) {
+    	 window.onload = function(){ 
+    		   var tbody = document.getElementById('tbMainApplyOrder'); 
+    		   for(var i = 0;i < per.length; i++){ //遍历一下json数据 
+    		     var trow = getDataRow(per[i]); //定义一个方法,返回tr数据 
+    		     tbody.appendChild(trow); 
+    		    } 
+    	 } 
+   		 function getDataRow(h){ 
+   		   var row = document.createElement('tr'); //创建行 
+   		   var idCell = document.createElement('td'); //创建第一列id 
+   		   idCell.innerHTML = h.id; //填充数据 
+   		   row.appendChild(idCell); //加入行 ，下面类似 
+   		   var nameCell = document.createElement('td');//创建第二列name 
+   		   nameCell.innerHTML = h.message; 
+   		   row.appendChild(nameCell); 
+   		   var jobCell = document.createElement('td');//创建第三列job 
+   		   jobCell.innerHTML = h.orderstatus; 
+   		   row.appendChild(jobCell); 
+   		   //到这里，json中的数据已经添加到表格中，下面为每行末尾添加删除按钮 
+   		   var delCell = document.createElement('td');//创建第四列，操作列 
+   		   row.appendChild(delCell); 
+   		   var btnDel = document.createElement('input'); //创建一个input控件 
+   		   btnDel.setAttribute('type','button'); //type="button" 
+   		   btnDel.setAttribute('value','删除');  
+   		   //删除操作 
+   		   btnDel.onclick=function(){ 
+   		     if(confirm("确定删除这一行嘛？")){ 
+   		       //找到按钮所在行的节点，然后删掉这一行 
+   		       this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); 
+   		       //btnDel - td - tr - tbody - 删除(tr) 
+   		       //刷新网页还原。实际操作中，还要删除数据库中数据，实现真正删除 
+   		       } 
+   		     } 
+   		   delCell.appendChild(btnDel); //把删除按钮加入td，别忘了 
+   		   return row; //返回tr数据   
+   	   }   
+
+     },
+     error : function() {
+         alert("异常！");
+     }
+ });
+
+ /* window.onload = function(){ 
+   var tbody = document.getElementById('tbMainApplyOrder'); 
+   for(var i = 0;i < per.length; i++){ //遍历一下json数据 
+     var trow = getDataRow(per[i]); //定义一个方法,返回tr数据 
+     tbody.appendChild(trow); 
+    } 
+   } 
+ function getDataRow(h){ 
+   var row = document.createElement('tr'); //创建行 
+   var idCell = document.createElement('td'); //创建第一列id 
+   idCell.innerHTML = h.id; //填充数据 
+   row.appendChild(idCell); //加入行 ，下面类似 
+   var nameCell = document.createElement('td');//创建第二列name 
+   nameCell.innerHTML = h.message; 
+   row.appendChild(nameCell); 
+   var jobCell = document.createElement('td');//创建第三列job 
+   jobCell.innerHTML = h.orderstatus; 
+   row.appendChild(jobCell); 
+   //到这里，json中的数据已经添加到表格中，下面为每行末尾添加删除按钮 
+   var delCell = document.createElement('td');//创建第四列，操作列 
+   row.appendChild(delCell); 
+   var btnDel = document.createElement('input'); //创建一个input控件 
+   btnDel.setAttribute('type','button'); //type="button" 
+   btnDel.setAttribute('value','删除');  
+   //删除操作 
+   btnDel.onclick=function(){ 
+     if(confirm("确定删除这一行嘛？")){ 
+       //找到按钮所在行的节点，然后删掉这一行 
+       this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); 
+       //btnDel - td - tr - tbody - 删除(tr) 
+       //刷新网页还原。实际操作中，还要删除数据库中数据，实现真正删除 
+       } 
+     } 
+   delCell.appendChild(btnDel); //把删除按钮加入td，别忘了 
+   return row; //返回tr数据   
+   }    */
+</script>
+
 </head>
+
 <body>
 	<div class="container">
 		<ul class="nav nav-pills">
@@ -129,18 +221,16 @@
 				value="开始测试">
 			<div>
 				<p>请用语音审批，自动触发的按钮会变成灰色:</p>
-				<small>只要语句中包含<b>通过/可以/同意</b>，则会触发”同意“，否则触发”拒绝“
-				</small>
+				<small>只要语句中包含<b>通过/可以/同意</b>，则会触发”同意“，否则触发”拒绝“</small>
 			</div>
-			<br/><br/>
+			<br /> <br />
 			<div>
 				<button class="btn btn-primary" onclick="startRecording(this)">录音</button>
 				<button class="btn btn-primary hidden" onclick="uploadAudio(this,1)"
 					disabled hidden="true">批复</button>
 				<div id="recordingslist1"></div>
 
-				<textarea id="audioText1" name="records[0].answer" rows="3"
-					cols="50">${result} </textarea>
+				<textarea id="audioText1" name="records[0].answer" rows="3" cols="50">${result} </textarea>
 			</div>
 		</form>
 	</div>
@@ -152,15 +242,20 @@
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
-							<th>财务审批</th>
+							<th>编号</th>
+							<th>申请说明</th>
+							<th>状态</th>
+							<th>申请日期</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<tr class="success">
+							<td>1</td>
 							<td><input type="text" id="parsedData" name="audioData" /><br /></td>
+							<td>new</td>
+							<td>20/03/2019</td>
 						</tr>
 					</tbody>
-
 				</table>
 				<div class="btn-group">
 					<button class="btn btn-success" id="approveBtn" name="approveBtn"
@@ -175,6 +270,25 @@
 			</div>
 		</form>
 	</div>
+	
+	<div class="container">
+		<form method="post" enctype="multipart/form-data">
+			<h2>审批申请</h2>
+			<br />
+			<div class="table-responsive">			
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>申请说明</th>
+							<th>状态</th>
+						</tr>
+					</thead>
+				    <tbody id="tbMainApplyOrder"></tbody> 
+				</table>
+			</div>
+		</form>
+	</div>	
 
 </body>
 </html>
