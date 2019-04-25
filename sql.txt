@@ -1,0 +1,66 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""Create Table 'apply_orders'"""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+CREATE TABLE `apply_orders` (
+  `id` int(32) NOT NULL AUTO_INCREMENT,
+  `message` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `createdate` timestamp NULL DEFAULT NULL,
+  `lastchangedate` timestamp NULL DEFAULT NULL,
+  `orderstatus` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `creator` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `processor` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastchangeby` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""Insert data into 'apply_orders'"""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+INSERT INTO `mysql_order`.`apply_orders`
+(`id`,
+`message`,
+`createdate`,
+`lastchangedate`,
+`orderstatus`,
+`creator`,
+`processor`,
+`lastchangeby`)
+VALUES
+(<{id: }>,
+<{message: }>,
+<{createdate: }>,
+<{lastchangedate: }>,
+<{orderstatus: }>,
+<{creator: }>,
+<{processor: }>,
+<{lastchangeby: }>);
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""Update 'apply_orders'"""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+UPDATE `mysql_order`.`apply_orders`
+SET
+`id` = <{id: }>,
+`message` = <{message: }>,
+`createdate` = <{createdate: }>,
+`lastchangedate` = <{lastchangedate: }>,
+`orderstatus` = <{orderstatus: }>,
+`creator` = <{creator: }>,
+`processor` = <{processor: }>,
+`lastchangeby` = <{lastchangeby: }>
+WHERE `id` = <{expr}>;
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""Select All from 'apply_orders'""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+SELECT `apply_orders`.`id`,
+    `apply_orders`.`message`,
+    `apply_orders`.`createdate`,
+    `apply_orders`.`lastchangedate`,
+    `apply_orders`.`orderstatus`,
+    `apply_orders`.`creator`,
+    `apply_orders`.`processor`,
+    `apply_orders`.`lastchangeby`
+FROM `mysql_order`.`apply_orders`;
+
+
