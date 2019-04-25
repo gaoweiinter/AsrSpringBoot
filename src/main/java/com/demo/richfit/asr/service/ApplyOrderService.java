@@ -32,6 +32,25 @@ public class ApplyOrderService {
        return mapper.insert(applyorder);
    }
    
+   public int updateByPrimaryKey(ApplyOrder applyorder) {
+	   return mapper.updateByPrimaryKey(applyorder);
+   }
+   
+   public ApplyOrder selectByPrimaryKey(String id) {
+	   return mapper.selectByPrimaryKey(id);
+   }
+   
+   public ApplyOrder approveByPrimaryKey(String id) {
+	   System.out.println("Progressing approveByPrimaryKey");
+	   ApplyOrder order = mapper.selectByPrimaryKey(id);
+	   if(order != null && order.getOrderstatus().contains("In Processing")) { 		   
+		   order.setOrderstatus("Approved");
+		   mapper.updateByPrimaryKey(order);
+	   }
+		   
+	   return order ;
+   }
+   
    public List<ApplyOrder> getApplyOrderById(String id) {
        return mapper.getApplyOrderById(id);
    }

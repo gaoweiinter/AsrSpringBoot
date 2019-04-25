@@ -141,21 +141,25 @@
    		   jobCell.innerHTML = h.orderstatus; 
    		   row.appendChild(jobCell); 
    		   //到这里，json中的数据已经添加到表格中，下面为每行末尾添加删除按钮 
-   		   var delCell = document.createElement('td');//创建第四列，操作列 
-   		   row.appendChild(delCell); 
-   		   var btnDel = document.createElement('input'); //创建一个input控件 
-   		   btnDel.setAttribute('type','button'); //type="button" 
-   		   btnDel.setAttribute('value','删除');  
+   		   var approveCell = document.createElement('td');//创建第四列，操作列 
+   		   row.appendChild(approveCell); 
+   		   var btnApprove = document.createElement('input'); //创建一个input控件 
+   		   btnApprove.setAttribute('type','button'); //type="button" 
+   		   btnApprove.setAttribute('value','批准');  
    		   //删除操作 
-   		   btnDel.onclick=function(){ 
-   		     if(confirm("确定删除这一行嘛？")){ 
-   		       //找到按钮所在行的节点，然后删掉这一行 
-   		       this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); 
-   		       //btnDel - td - tr - tbody - 删除(tr) 
-   		       //刷新网页还原。实际操作中，还要删除数据库中数据，实现真正删除 
-   		       } 
-   		     } 
-   		   delCell.appendChild(btnDel); //把删除按钮加入td，别忘了 
+   		   btnApprove.onclick=function( ){ 
+               $.ajax({
+                   type: "POST",
+                   url: "<%=path%>/applyorder/approveAll",                   
+                   success: function (result) {                      
+                           alert(result);   
+                   },
+                   error : function() {
+                       alert("异常！");
+                   }
+               });
+   		   } 
+   		   approveCell.appendChild(btnApprove); //把删除按钮加入td，别忘了 
    		   return row; //返回tr数据   
    	   }   
 
