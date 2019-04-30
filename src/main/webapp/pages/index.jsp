@@ -2,15 +2,17 @@
 	pageEncoding="utf-8"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
+
 <!DOCTYPE html>
 <!-- <html xmlns="http://www.w3.org/1999/xhtml"> -->
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ <base href="<%=basePath%>">
 <title>${title}</title>
 <!-- 新 Bootstrap 核心 CSS 文件 -->
 <link
@@ -110,6 +112,32 @@
 	function popmsg(button) {
 		alert(button.value);
 		button.disabled = true;
+	}
+	
+	function approveOrderById(id) {
+		 $.ajax({
+	            type: "POST",
+	            async: false,
+	            dataType: "json",
+	            url: "<%=path%>/applyorder/approveById",
+	            data: 'id=' +id,
+	            success: function (result) {
+	           	 location.reload();
+	            }
+	        });
+	}
+	
+	function deleteOrderById(id) {
+		 $.ajax({
+	            type: "POST",
+	            async: false,
+	            dataType: "json",
+	            url: "<%=path%>/applyorder/delOrderById",
+	            data: 'id=' +id,
+	            success: function (result) {
+	           	location.reload();
+	            }
+	        });
 	}
 </script>
 
@@ -239,7 +267,7 @@
 		</form>
 	</div>
 	<div class="container">
-		<form method="post" enctype="multipart/form-data">
+		<form method="post" enctype="multipart/form-data" style="display: none">
 			<h2>财务审批</h2>
 			<br />
 			<div class="table-responsive">
@@ -276,11 +304,9 @@
 	</div>
 	
 	<div class="container">
-		<form method="post" enctype="multipart/form-data">
-			<h2>审批申请</h2>
-			<br />
+		<form method="post" enctype="multipart/form-data" >
 			<div class="table-responsive">			
-				<table class="table table-striped table-bordered">
+				<table class="table table-striped table-bordered" style="display: none">
 					<thead>
 						<tr>
 							<th>编号</th>
@@ -294,5 +320,36 @@
 		</form>
 	</div>	
 
+<div class="container">
+<form enctype="multipart/form-data">
+	<div class="table-responsive">	
+	<table class="table table-striped table-bordered" id="tApplyOrders">
+	    <h6><a href="<%=basePath%>/applyorder/approveAll" >一键批准</a></h6>
+		<tbody>
+			<tr>
+	            <th>编号</th>
+				<th>申请说明</th>
+				<th>状态</th>
+				<th>申请日期</th>
+				<th>编辑</th>
+				<th>删除</th>
+			</tr>
+			<c:if test="${!empty orders}">
+				<c:forEach items="${ orders }" var="order">
+					<tr>
+						<td>${order.id}</td>
+						<td>${order.message}</td>
+						<td>${order.orderstatus}</td>
+						<td>${order.createdate}</td>
+						<td><a href="#" onclick = "approveOrderById(${order.id})">同意</a></td>	
+						<td><a href="#" onclick = "deleteOrderById(${order.id})">删除</a></td>										
+					</tr>				
+				</c:forEach>
+			</c:if>
+		</tbody>		 
+	</table>	
+	</div>
+	</form>
+</div>	
 </body>
 </html>

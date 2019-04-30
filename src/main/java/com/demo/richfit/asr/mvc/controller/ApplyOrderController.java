@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,9 +21,10 @@ public class ApplyOrderController {
 	@Autowired
 	private ApplyOrderService service;
 
-	@RequestMapping(value = "/approveAll", method = RequestMethod.POST)
+	//@RequestMapping(value = "/approveAll", method = RequestMethod.POST)
+	@RequestMapping(value = "/approveAll")
 	public String approveOrdersInProcessing() {
-		String resultStatus = "你没有需要处理的申请！";
+		//String resultStatus = "你没有需要处理的申请！";
 		List<ApplyOrder> list = service.getAllApplyOrders();
 
 		Iterator<ApplyOrder> applyOrderIter = list.iterator();
@@ -31,18 +33,21 @@ public class ApplyOrderController {
 			if (applyorder.getOrderstatus().contains("In Processing") ) {
 				applyorder.setOrderstatus("Approved");
 				service.updateByPrimaryKey(applyorder);
-				resultStatus = "申请已批准！";
+				//resultStatus = "申请已批准！";
 			}
 		}
 		
-		return resultStatus;
+//		return resultStatus;
+		return "redirect:home/page";
 	}
 	
 	@RequestMapping(value = "/approveById", method = RequestMethod.POST)
+	//@RequestMapping(value = "/approveById")
 	public ApplyOrder approveApplyOrderById(@RequestParam("id") String id) {
 		return service.approveByPrimaryKey(id);
 	}
 
+    
 	@RequestMapping("/getAll")
 	public List<ApplyOrder> getAllApplyOrders() {
 		System.out.println("get all aplly orders!");
@@ -52,7 +57,20 @@ public class ApplyOrderController {
 		return resultList;
 
 	}
+	
+	@RequestMapping("/")
+    public String index() {
+        return "redirect:/orderlist";
+    }
 
+    @RequestMapping("/orderlist")
+    public String list(Model model) {
+    	System.out.println("get order list");
+    	List<ApplyOrder> resultList = service.getAllApplyOrders();
+        model.addAttribute("orders", resultList);
+        return "applyorder/orderlist";
+    }
+    
 	@RequestMapping("/getByID")
 	public List<ApplyOrder> getApplyOrderById(@RequestParam("id") String id) {
 		List<ApplyOrder> list = service.getApplyOrderById(id);
